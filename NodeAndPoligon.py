@@ -25,6 +25,15 @@ class Poligon (Node):
         self.low_limit = low_limit
         self.high_limit = high_limit
 
+    def __repr__(self):
+        b = ""
+        for monomial_idx in range(len(self.monomials)):
+            b += str(self.monomials[monomial_idx].coefficient)
+            if monomial_idx != len(self.monomials) - 1:
+                b += "x^" + str(self.monomials[monomial_idx].degree) + " + "
+
+        return b
+
     def calculate_integrate(self):
         aggregator = 0
         for monomial in self.monomials:
