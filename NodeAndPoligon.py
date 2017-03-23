@@ -7,6 +7,9 @@ class Node:
     def calculate_integrate(self):
         return None
 
+    def is_tree(self):
+        return False
+
 
 class Tree (Node):
     def __init__(self, left, right):
@@ -15,7 +18,21 @@ class Tree (Node):
         self.right = right
 
     def calculate_integrate(self):
-        return self.left.calculateIntegrate() + self.right.calculateIntegrate()
+        return self.left.calculate_integrate() + self.right.calculate_integrate()
+
+    def is_tree(self):
+        return True
+
+    def map_poligons_over_tree(self, poligon_list):
+        if self.left.is_tree():
+            self.left.map_poligons_over_tree(poligon_list)
+        else:
+            self.left = poligon_list.pop(0)
+
+        if self.right.is_tree():
+            self.right.map_poligons_over_tree(poligon_list)
+        else:
+            self.right = poligon_list.pop(0)
 
 
 class Poligon (Node):
@@ -38,9 +55,12 @@ class Poligon (Node):
         aggregator = 0
         for monomial in self.monomials:
             aggregator = aggregator +  \
-                         monomial.getIntegralPartAt(self.high_limit) - monomial.getIntegralPartAt(self.low_limit)
+                         monomial.get_integral_part_at(self.high_limit) - monomial.get_integral_part_at(self.low_limit)
 
         return aggregator
+
+    def is_tree(self):
+        return False
 
 
 class Monomial:
@@ -51,3 +71,4 @@ class Monomial:
 
     def get_integral_part_at(self, border):
         return ((border + 0.0) ** (self.degree + 1.0)) * (self.coefficient + 0.0) / (self.degree + 1.0)
+

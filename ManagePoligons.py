@@ -100,12 +100,6 @@ class ManagePoligons:
         return list_of_poligons
 
 
-# #Example usage
-# poligon_degree = 2
-# points = [3, 4, 5]
-#
-#
-# def f(x):
-#     return x ** 2 + 2 * x + 1
-#
-# print ManagePoligons(points, poligon_degree, f).resolve_poligons_list()
+#will be in Application.py ... somewhen
+def f(x):
+    return x ** 2 + 2 * x + 1
