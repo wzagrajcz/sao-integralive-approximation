@@ -98,8 +98,3 @@ class ManagePoligons:
             list_of_poligons.append(Poligon(monomials, self.points[poligon_idx], self.points[poligon_idx + 1]))
 
         return list_of_poligons
-
-
-#will be in Application.py ... somewhen
-def f(x):
-    return x ** 2 + 2 * x + 1

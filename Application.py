@@ -7,4 +7,6 @@ points = [3, 4, 5, 6, 7]
 
 poligons = ManagePoligons(points, poligon_degree, f).resolve_poligons_list()
 tree.map_poligons_over_tree(poligons)
-print tree.calculate_integrate()
+
+print tree.find_worst_fitting_range()
+
