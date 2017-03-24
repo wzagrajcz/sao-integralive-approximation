@@ -1,12 +1,13 @@
-from ManagePoligons import *
-
-tree = Tree(Tree(Node(), Node()), Tree(Node(), Node()))
+from TreeManager import *
 
 poligon_degree = 2
-points = [3, 4, 5, 6, 7]
-
-poligons = ManagePoligons(points, poligon_degree, f).resolve_poligons_list()
-tree.map_poligons_over_tree(poligons)
-
-print tree.find_worst_fitting_range()
-
+mn = 2
+mx = 5
+tree = TreeManager().initialize_tree(mn, mx, poligon_degree)
+print calculate_library_integral_on_range(mn, mx)
+print tree.calculate_integrate()
+new_tree = TreeManager().add_node_for_worst_fitting_range(tree, poligon_degree)
+print new_tree.calculate_integrate()
+for i in range(10):
+    new_tree = TreeManager().add_node_for_worst_fitting_range(new_tree, poligon_degree)
+    print new_tree.calculate_integrate()

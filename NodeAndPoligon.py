@@ -51,6 +51,47 @@ class Tree (Node):
             return left_error
         return right_error
 
+    def insert_new_point(self, midpoint):
+        if self.left.is_tree():
+            self.left.insert_new_point(midpoint)
+        else:
+            if self.left.is_in_range(midpoint):
+                left_poligon = Poligon([], self.left.low_limit, midpoint)
+                right_poligon = Poligon([], midpoint, self.left.high_limit)
+                self.left = Tree(left_poligon, right_poligon)
+
+        if self.right.is_tree():
+            self.right.insert_new_point(midpoint)
+        else:
+            if self.right.is_in_range(midpoint):
+                left_poligon = Poligon([], self.right.low_limit, midpoint)
+                right_poligon = Poligon([], midpoint, self.right.high_limit)
+                self.right = Tree(left_poligon, right_poligon)
+
+    def get_list_of_points(self):
+        list_of_points = self.get_list_of_points_helper()
+        list_of_points.append(self.get_highest_point())
+        return list_of_points
+
+    def get_highest_point(self):
+        if self.right.is_tree():
+            return self.right.get_highest_point()
+        return self.right.high_limit
+
+    def get_list_of_points_helper(self):
+        list_of_points = []
+        if self.left.is_tree():
+            list_of_points += self.left.get_list_of_points_helper()
+        else:
+            list_of_points.append(self.left.low_limit)
+
+        if self.right.is_tree():
+            list_of_points += self.right.get_list_of_points_helper()
+        else:
+            list_of_points.append(self.right.low_limit)
+
+        return list_of_points
+
 
 class Poligon(Node):
     def __init__(self, monomials, low_limit, high_limit):
@@ -82,8 +123,13 @@ class Poligon(Node):
     def calculate_integrality_error(self):
         original = calculate_library_integral_on_range(self.low_limit, self.high_limit)
         calculated = self.calculate_integrate()
+        return abs(original - calculated)/ abs(original), self.low_limit, self.high_limit#
 
-        return abs((original - calculated) / original), self.low_limit, self.high_limit
+    def mock_poligon(self):
+        return Poligon([], self.low_limit, self.high_limit)
+
+    def is_in_range(self, point):
+        return self.low_limit <= point <= self.high_limit
 
 
 class Monomial:
