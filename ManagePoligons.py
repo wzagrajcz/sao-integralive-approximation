@@ -31,8 +31,8 @@ class ManagePoligons:
         equation = [0] * self.matrix_size
 
         for degree in range(self.poligon_degree + 1):
-            equation[offset + self.poligon_degree - degree] += get_nth_diff_at_point(point, 1, self.poligon_degree - degree, n)
-            equation[offset + self.poligon_degree - degree + self.poligon_degree + 1] += get_nth_diff_at_point(point, -1,
+            equation[offset + degree] += get_nth_diff_at_point(point, 1, self.poligon_degree - degree, n)
+            equation[offset + degree + self.poligon_degree + 1] += get_nth_diff_at_point(point, -1,
                                                                                         self.poligon_degree - degree, n)
 
         return equation, 0

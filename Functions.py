@@ -2,7 +2,7 @@ from scipy.integrate import quad
 
 
 def f(x):
-    return x ** 2 + 2 * x + 1
+    return 0.5 * x**4 - 2.34 * x**3 + 0.654 * x**2 - 12*x + 0.75
 
 
 def calculate_library_integral_on_range(x1, x2):

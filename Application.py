@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-poligon_degree = 3
-mn = -2
-mx = 3
+poligon_degree = 2
+mn = -10
+mx = 10
 
 print calculate_library_integral_on_range(mn, mx)
 
