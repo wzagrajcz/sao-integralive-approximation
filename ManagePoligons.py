@@ -21,7 +21,7 @@ class ManagePoligons:
         equation = [0] * self.matrix_size
 
         for degree in range(self.poligon_degree + 1):
-            equation[offset + degree] = self.get_value_at_point(point, 1, degree)
+            equation[offset + self.poligon_degree - degree] += self.get_value_at_point(point, 1, degree)
 
         return equation, f(point)
 
@@ -31,8 +31,8 @@ class ManagePoligons:
         equation = [0] * self.matrix_size
 
         for degree in range(self.poligon_degree + 1):
-            equation[offset + degree] = get_nth_diff_at_point(point, 1, self.poligon_degree - degree, n)
-            equation[offset + degree + self.poligon_degree + 1] = get_nth_diff_at_point(point, -1,
+            equation[offset + self.poligon_degree - degree] += get_nth_diff_at_point(point, 1, self.poligon_degree - degree, n)
+            equation[offset + self.poligon_degree - degree + self.poligon_degree + 1] += get_nth_diff_at_point(point, -1,
                                                                                         self.poligon_degree - degree, n)
 
         return equation, 0
@@ -46,8 +46,8 @@ class ManagePoligons:
         equation = [0] * matrix_size
 
         for degree in range(poligon_degree + 1):
-            equation[degree] = get_nth_diff_at_point(left_edge_point, 1, poligon_degree - degree, n)
-            equation[degree + offset + 1] = get_nth_diff_at_point(right_edge_point, -1, poligon_degree - degree, n)
+            equation[poligon_degree - degree] += get_nth_diff_at_point(left_edge_point, 1, poligon_degree - degree, n)
+            equation[poligon_degree - degree + offset + 1] += get_nth_diff_at_point(right_edge_point, -1, poligon_degree - degree, n)
 
         return equation, 0
 
@@ -71,12 +71,18 @@ class ManagePoligons:
                 coefficients_matrix.append(equation)
                 result_matrix.append(value)
 
-        for degree in range(1, self.poligon_degree):
-            equation, value = self.get_equation_for_nth_derivative_equality(
-                self.points[0], self.points[-1], self.poligon_degree, len(self.points) - 1, degree)
+        if len(self.points) == 2:
+            for degree in range(1, self.poligon_degree):
+                equation = self.get_equation_for_nth_derivative_value(self.points[0], self.poligon_degree, degree)
+                coefficients_matrix.append(equation)
+                result_matrix.append(0)
+        else:
+            for degree in range(1, self.poligon_degree):
+                equation, value = self.get_equation_for_nth_derivative_equality(
+                    self.points[0], self.points[-1], self.poligon_degree, len(self.points) - 1, degree)
 
-            coefficients_matrix.append(equation)
-            result_matrix.append(value)
+                coefficients_matrix.append(equation)
+                result_matrix.append(value)
 
         return coefficients_matrix, result_matrix
 
@@ -98,3 +104,17 @@ class ManagePoligons:
             list_of_poligons.append(Poligon(monomials, self.points[poligon_idx], self.points[poligon_idx + 1]))
 
         return list_of_poligons
+
+    def get_equation_for_nth_derivative_value(self, point, poligon_degree, n):
+
+        equation = [0] * self.matrix_size
+        for degree in range(poligon_degree + 1):
+            params = self.get_derivative_n_params_at_point(1, degree, n)
+            equation[poligon_degree - degree] = (point ** params[1]) * params[0]
+
+        return equation
+
+    def get_derivative_n_params_at_point(self, coefficient, degree, n):
+        if n == 0:
+            return coefficient, degree
+        return self.get_derivative_n_params_at_point(coefficient * degree, degree - 1, n - 1)

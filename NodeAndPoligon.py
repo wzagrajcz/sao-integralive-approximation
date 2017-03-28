@@ -14,16 +14,22 @@ class Node:
 
 
 class Tree (Node):
-    def __init__(self, left, right):
+    def __init__(self, left, right, midpoint):
         Node.__init__(self)
         self.left = left
         self.right = right
+        self.midpoint = midpoint
 
     def calculate_integrate(self):
         return self.left.calculate_integrate() + self.right.calculate_integrate()
 
     def is_tree(self):
         return True
+
+    def calculate_value(self, point):
+        if self.midpoint < point:
+            return self.right.calculate_value(point)
+        return self.left.calculate_value(point)
 
     def map_poligons_over_tree(self, poligon_list):
         if self.left.is_tree():
@@ -58,7 +64,7 @@ class Tree (Node):
             if self.left.is_in_range(midpoint):
                 left_poligon = Poligon([], self.left.low_limit, midpoint)
                 right_poligon = Poligon([], midpoint, self.left.high_limit)
-                self.left = Tree(left_poligon, right_poligon)
+                self.left = Tree(left_poligon, right_poligon, midpoint)
 
         if self.right.is_tree():
             self.right.insert_new_point(midpoint)
@@ -66,7 +72,7 @@ class Tree (Node):
             if self.right.is_in_range(midpoint):
                 left_poligon = Poligon([], self.right.low_limit, midpoint)
                 right_poligon = Poligon([], midpoint, self.right.high_limit)
-                self.right = Tree(left_poligon, right_poligon)
+                self.right = Tree(left_poligon, right_poligon, midpoint)
 
     def get_list_of_points(self):
         list_of_points = self.get_list_of_points_helper()
@@ -120,6 +126,10 @@ class Poligon(Node):
     def is_tree(self):
         return False
 
+    def calculate_value(self, point):
+        if self.is_in_range(point):
+            return self.calculate_value_at_point(point)
+
     def calculate_integrality_error(self):
         original = calculate_library_integral_on_range(self.low_limit, self.high_limit)
         calculated = self.calculate_integrate()
@@ -131,6 +141,13 @@ class Poligon(Node):
     def is_in_range(self, point):
         return self.low_limit <= point <= self.high_limit
 
+    def calculate_value_at_point(self, point):
+        aggregator = 0
+        for monomial in self.monomials:
+            aggregator += monomial.get_value_at_point(point)
+
+        return aggregator
+
 
 class Monomial:
     def __init__(self, coefficient, degree):
@@ -139,3 +156,6 @@ class Monomial:
 
     def get_integral_part_at(self, border):
         return ((border + 0.0) ** (self.degree + 1.0)) * (self.coefficient + 0.0) / (self.degree + 1.0)
+
+    def get_value_at_point(self, point):
+        return (point ** self.degree) * self.coefficient

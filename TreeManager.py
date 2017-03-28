@@ -20,7 +20,7 @@ class TreeManager:
         else:
             right = source.right.mock_poligon()
 
-        return Tree(left, right)
+        return Tree(left, right, source.midpoint)
 
     def add_node_for_worst_fitting_range(self, root, poligon_degree):
         if root.is_tree():
@@ -37,7 +37,7 @@ class TreeManager:
 
             midpoint = self.find_random_point_between(high_limit, low_limit)
             poligons_list = ManagePoligons([low_limit, midpoint, high_limit], poligon_degree, f).resolve_poligons_list()
-            return Tree(poligons_list[0], poligons_list[1])
+            return Tree(poligons_list[0], poligons_list[1], midpoint)
 
     def find_random_point_between(self, high_limit, low_limit):
         draw = 0
