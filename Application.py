@@ -31,13 +31,3 @@ def get_plot():
 if not os.path.exists("./plots/"):
     os.makedirs("./plots/")
 get_plot()
-
-
-
-
-
-
-
-
-
-
