@@ -31,6 +31,11 @@ class Tree (Node):
             return self.right.calculate_value(point)
         return self.left.calculate_value(point)
 
+    def get_poligon_str_repr(self, point):
+        if self.midpoint < point:
+            return self.right.get_poligon_str_repr(point)
+        return self.left.get_poligon_str_repr(point)
+
     def map_poligons_over_tree(self, poligon_list):
         if self.left.is_tree():
             self.left.map_poligons_over_tree(poligon_list)
@@ -114,6 +119,9 @@ class Poligon(Node):
                 b += "x^" + str(self.monomials[monomial_idx].degree) + " + "
 
         return b
+
+    def get_poligon_str_repr(self, point):
+        return self.__repr__()
 
     def calculate_integrate(self):
         aggregator = 0
