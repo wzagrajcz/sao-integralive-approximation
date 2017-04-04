@@ -7,15 +7,19 @@ poligon_degree = 2
 mn = -10
 mx = 10
 
-print calculate_library_integral_on_range(mn, mx)
+# print calculate_library_integral_on_range(mn, mx)
+#
+# new_tree = TreeManager().initialize_tree(mn, mx, poligon_degree)
+# print new_tree.calculate_integrate()
+#
+# for i in range(7):
+#     new_tree = TreeManager().add_node_for_worst_fitting_range(new_tree, poligon_degree)
+#     print new_tree.calculate_integrate()
 
-new_tree = TreeManager().initialize_tree(mn, mx, poligon_degree)
-print new_tree.calculate_integrate()
-
-for i in range(7):
-    new_tree = TreeManager().add_node_for_worst_fitting_range(new_tree, poligon_degree)
-    print new_tree.calculate_integrate()
-
+tree_2 = TreeManager().initialize_tree(mn, mx, poligon_degree)
+tree_2 = TreeManager().add_node_for_some_ranges(tree_2, poligon_degree, 1)
+tree_2 = TreeManager().add_node_for_some_ranges(tree_2, poligon_degree, 2)
+tree_2 = TreeManager().add_node_for_some_ranges(tree_2, poligon_degree, 4)
 
 def get_plot():
     global domain, values
@@ -23,7 +27,7 @@ def get_plot():
     values = []
     original = []
     for i in domain:
-        values.append(new_tree.calculate_value(i))
+        values.append(tree_2.calculate_value(i))
         original.append(f(i))
     plt.plot(domain, original)
     plt.plot(domain, values)
@@ -52,4 +56,4 @@ def get_color_plot(tree):
 
 if not os.path.exists("./plots/"):
     os.makedirs("./plots/")
-get_color_plot(new_tree)
+get_color_plot(tree_2)

@@ -103,6 +103,21 @@ class Tree (Node):
 
         return list_of_points
 
+    def get_list_of_ranges(self):
+        return self.left.get_list_of_ranges() + self.right.get_list_of_ranges()
+
+    def get_list_of_poligons(self):
+        l = []
+        if not self.left.is_tree():
+            l.append(self.left)
+        else:
+            l = l + self.left.get_list_of_poligons()
+        if not self.right.is_tree():
+            l.append(self.right)
+        else:
+            l = l + self.right.get_list_of_poligons()
+        return l
+
 
 class Poligon(Node):
     def __init__(self, monomials, low_limit, high_limit):
@@ -155,6 +170,9 @@ class Poligon(Node):
             aggregator += monomial.get_value_at_point(point)
 
         return aggregator
+
+    def get_list_of_ranges(self):
+        return self.low_limit, self.high_limit
 
 
 class Monomial:
