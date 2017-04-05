@@ -1,11 +1,6 @@
 from TreeManager import *
 from StartupManager import *
 from SolutionsAggregator import *
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-
-
 
 mn = -10
 mx = 10
@@ -39,3 +34,4 @@ for i in range(17):
 
 solutions_aggregator.order_solutions()
 solutions_aggregator.save_best_n_solutions_to_file(4, './plots/')
+solutions_aggregator.serialize_solutions_to_file('./solutions.txt')

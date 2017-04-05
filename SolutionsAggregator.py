@@ -11,6 +11,7 @@ class SolutionsAggregator:
         self.epsilon = epsilon
         self.solutions = {}
         self.ordered_solutions = []
+        self.solutions_epsilon = {}
 
     def add_solution_to_pool(self, solution, degree):
         self.solutions[solution] = degree
@@ -28,6 +29,7 @@ class SolutionsAggregator:
             solution_fit = abs(solution_value - exact_value) / abs(exact_value)
 
             if solution_fit <= self.epsilon:
+                self.solutions_epsilon[solution] = solution_fit
                 solutions_fit[solution] = self.solution_greatness(degree, number_of_points, solution_fit)
 
         self.ordered_solutions = sorted(solutions_fit.items(), key=operator.itemgetter(1))
@@ -61,7 +63,20 @@ class SolutionsAggregator:
             self.get_color_plot(self.ordered_solutions[i][0], path + str(i) + '.' + extention)
         print "Saved " + str(number_of_solutions_to_save) + " solutions"
 
-    def serialize_solutions_to_file(self):
-        pass
+    def serialize_solutions_to_file(self, file_path):
+        f = open(file_path, 'w+')
+        for solution_idx in range(len(self.ordered_solutions)):
+            string_buffer = str(solution_idx) + ': ' + '\n'
+            string_buffer = string_buffer + '\t' + 'cost_function_value: ' + str(self.ordered_solutions[solution_idx][1]) + '\n'
+
+            solution = self.ordered_solutions[solution_idx][0]
+
+            string_buffer = string_buffer + '\t' + 'epsilon: ' + str(self.solutions_epsilon[solution]) + '\n'
+            string_buffer = string_buffer + '\t' + 'degree: ' + str(self.solutions[solution]) + '\n'
+            string_buffer = string_buffer + '\t' + 'num_of_midpoints: ' + str(len(solution.get_list_of_points()) - 2) + '\n'
+
+            f.write(string_buffer)
+
+        f.close()
 
 
