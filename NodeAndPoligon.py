@@ -146,6 +146,9 @@ class Poligon(Node):
 
         return aggregator
 
+    def get_list_of_points(self):
+        return [self.low_limit, self.high_limit]
+
     def is_tree(self):
         return False
 
