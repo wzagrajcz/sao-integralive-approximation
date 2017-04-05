@@ -64,7 +64,7 @@ class TreeManager:
 
             destination_tree = self.clone_tree_structure(root)
 
-            for i in range(number_of_nodes):
+            for i in range(int(number_of_nodes)):
                 destination_tree.insert_new_point(distribution.get_random_element())
 
             points = destination_tree.get_list_of_points()

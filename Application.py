@@ -12,7 +12,7 @@ startup_manager = StartupManager(posible_degrees)
 solutions_aggregator = SolutionsAggregator(mn, mx, epsilon)
 
 
-for i in range(17):
+for i in range(100):
     degree = startup_manager.get_most_optimal_solution()
 
     if degree not in trees:
