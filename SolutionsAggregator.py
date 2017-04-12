@@ -63,20 +63,52 @@ class SolutionsAggregator:
             self.get_color_plot(self.ordered_solutions[i][0], path + str(i) + '.' + extention)
         print "Saved " + str(number_of_solutions_to_save) + " solutions"
 
+    # deprecated
     def serialize_solutions_to_file(self, file_path):
         f = open(file_path, 'w+')
         for solution_idx in range(len(self.ordered_solutions)):
             string_buffer = str(solution_idx) + ': ' + '\n'
-            string_buffer = string_buffer + '\t' + 'cost_function_value: ' + str(self.ordered_solutions[solution_idx][1]) + '\n'
+            string_buffer = string_buffer + '\t' + 'cost_function_value: ' + str(
+                self.ordered_solutions[solution_idx][1]) + '\n'
 
             solution = self.ordered_solutions[solution_idx][0]
 
             string_buffer = string_buffer + '\t' + 'epsilon: ' + str(self.solutions_epsilon[solution]) + '\n'
             string_buffer = string_buffer + '\t' + 'degree: ' + str(self.solutions[solution]) + '\n'
-            string_buffer = string_buffer + '\t' + 'num_of_midpoints: ' + str(len(solution.get_list_of_points()) - 2) + '\n'
+            string_buffer = string_buffer + '\t' + 'num_of_midpoints: ' + str(
+                len(solution.get_list_of_points()) - 2) + '\n'
 
             f.write(string_buffer)
 
         f.close()
 
+    def serialize_solutions_as_json(self, file_path):
+        f = open(file_path, "w+")
+        f.write("[\n")
 
+        for solution_idx in range(len(self.ordered_solutions)):
+            solution_buffor = "\t{\n"
+            solution_buffor += '\t\t' + "\"solution index\" : " + str(solution_idx+1) + ",\n"
+            solution_buffor += '\t\t' + "\"solution greatness\" : " + str(
+                self.ordered_solutions[solution_idx][1]) + ",\n"
+
+            solution = self.ordered_solutions[solution_idx][0]
+
+            solution_buffor += '\t\t' + "\"epsilon\" : " + str(self.solutions_epsilon[solution]) + ",\n"
+            solution_buffor += '\t\t' + "\"degree\" : " + str(self.solutions[solution]) + ",\n"
+            solution_buffor += '\t\t' + "\"number of midpoints\" : " + str(
+                len(solution.get_list_of_points()) - 2) + ",\n"
+
+            solution_buffor += '\t\t' + "\"tree\" : " + solution.serialize_as_json(3) + "\n"
+
+            solution_buffor += "\t}"
+
+            if solution_idx != len(self.ordered_solutions) - 1:
+                solution_buffor += ","
+
+            solution_buffor += "\n"
+
+            f.write(solution_buffor)
+
+        f.write("]\n")
+        f.close()

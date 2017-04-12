@@ -118,6 +118,15 @@ class Tree (Node):
             l = l + self.right.get_list_of_poligons()
         return l
 
+    def serialize_as_json(self, level):
+        string_buffer = "{\n"
+        string_buffer += "\t"*level + "\"midpoint\" : " + str(self.midpoint) + ",\n"
+        string_buffer += "\t"*level + "\"left\" : " + self.left.serialize_as_json(level+1) + ",\n"
+        string_buffer += "\t"*level + "\"right\" : " + self.right.serialize_as_json(level+1) + "\n"
+        string_buffer += "\t"*(level-1) + "}"
+
+        return string_buffer
+
 
 class Poligon(Node):
     def __init__(self, monomials, low_limit, high_limit):
@@ -134,6 +143,20 @@ class Poligon(Node):
                 b += "x^" + str(self.monomials[monomial_idx].degree) + " + "
 
         return b
+
+    def serialize_as_json(self, level):
+        string_buffer = "{\n"
+        string_buffer += "\t"*level + "\"low limit\" : " + str(self.low_limit) + ",\n"
+        string_buffer += "\t"*level + "\"high limit\" : " + str(self.high_limit) + ",\n"
+        string_buffer += "\t"*level + "\"coefficients\" : " + "[\n"
+        for monomial_idx in range(len(self.monomials)):
+            string_buffer += self.monomials[monomial_idx].serialize_as_json(level+1)
+            if monomial_idx != len(self.monomials) - 1:
+                string_buffer += ","
+            string_buffer += "\n"
+        string_buffer += "\t"*level + "]\n"
+        string_buffer += "\t"*(level-1) + "}"
+        return string_buffer
 
     def get_poligon_str_repr(self, point):
         return self.__repr__()
@@ -188,3 +211,11 @@ class Monomial:
 
     def get_value_at_point(self, point):
         return (point ** self.degree) * self.coefficient
+
+    def serialize_as_json(self, level):
+        if self.degree == 0:
+            monomial_suffix = ""
+        else:
+            monomial_suffix = " * x^" + str(self.degree)
+
+        return "\t"*level + "\"" + str(self.coefficient) + monomial_suffix + "\""
