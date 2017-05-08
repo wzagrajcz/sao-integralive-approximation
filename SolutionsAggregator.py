@@ -5,10 +5,11 @@ import operator
 
 
 class SolutionsAggregator:
-    def __init__(self, mn, mx, epsilon):
+    def __init__(self, mn, mx, epsilon, alpha):
         self.min = mn
         self.max = mx
         self.epsilon = epsilon
+        self.alpha = alpha
         self.solutions = {}
         self.ordered_solutions = []
         self.solutions_epsilon = {}
@@ -17,7 +18,7 @@ class SolutionsAggregator:
         self.solutions[solution] = degree
 
     def solution_greatness(self, degree, number_of_points, difference_to_solution):
-        return (((degree + 1) * (number_of_points - 1)) ** 3) * difference_to_solution
+        return self.alpha*0.01*(1.0/8.0 - 1.0/(((degree + 1) * (number_of_points - 1)) ** 3)) + (1.0 - self.alpha)*difference_to_solution
 
     def order_solutions(self):
         solutions_fit = {}
@@ -112,3 +113,18 @@ class SolutionsAggregator:
 
         f.write("]\n")
         f.close()
+
+    def order_solutions_with_external_comparator(self, comparator):
+        solutions_fit = {}
+        exact_value = calculate_library_integral_on_range(self.min, self.max)
+
+        for solution, degree in self.solutions.iteritems():
+            number_of_points = len(solution.get_list_of_points())
+            solution_value = solution.calculate_integrate()
+            solution_fit = abs(solution_value - exact_value) / abs(exact_value)
+
+            if solution_fit <= self.epsilon:
+                self.solutions_epsilon[solution] = solution_fit
+                solutions_fit[solution] = comparator(degree, number_of_points, solution_fit)
+
+        self.ordered_solutions = sorted(solutions_fit.items(), key=operator.itemgetter(1))

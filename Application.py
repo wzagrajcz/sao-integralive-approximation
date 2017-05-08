@@ -9,10 +9,10 @@ epsilon = 0.1
 posible_degrees = range(1, 6)
 trees = {}
 startup_manager = StartupManager(posible_degrees)
-solutions_aggregator = SolutionsAggregator(mn, mx, epsilon)
+solutions_aggregator = SolutionsAggregator(mn, mx, epsilon, 0.5)
 
 
-for i in range(25):
+for i in range(125):
     degree = startup_manager.get_most_optimal_solution()
 
     if degree not in trees:
@@ -33,5 +33,5 @@ for i in range(25):
 
 
 solutions_aggregator.order_solutions()
-solutions_aggregator.save_best_n_solutions_to_file(4, './plots/')
+solutions_aggregator.save_best_n_solutions_to_file(25, './plots/')
 solutions_aggregator.serialize_solutions_as_json("./solutions.json")
