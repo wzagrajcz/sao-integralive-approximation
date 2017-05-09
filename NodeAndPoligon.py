@@ -47,21 +47,6 @@ class Tree (Node):
         else:
             self.right = poligon_list.pop(0)
 
-    def find_worst_fitting_range(self):
-        if self.left.is_tree():
-            left_error = self.left.find_worst_fitting_range()
-        else:
-            left_error = self.left.calculate_integrality_error()
-
-        if self.right.is_tree():
-            right_error = self.right.find_worst_fitting_range()
-        else:
-            right_error = self.right.calculate_integrality_error()
-
-        if left_error[0] > right_error[0]:
-            return left_error
-        return right_error
-
     def insert_new_point(self, midpoint):
         if self.left.is_tree():
             self.left.insert_new_point(midpoint)
@@ -179,10 +164,10 @@ class Poligon(Node):
         if self.is_in_range(point):
             return self.calculate_value_at_point(point)
 
-    def calculate_integrality_error(self):
-        original = calculate_library_integral_on_range(self.low_limit, self.high_limit)
-        calculated = self.calculate_integrate()
-        return abs(original - calculated)/ abs(original), self.low_limit, self.high_limit#
+    def alternative_calculate_value(self, point):
+        if self.is_in_range(point):
+            return self.calculate_value_at_point(point)
+        return 0
 
     def mock_poligon(self):
         return Poligon([], self.low_limit, self.high_limit)

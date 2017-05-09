@@ -26,8 +26,7 @@ class SolutionsAggregator:
 
         for solution, degree in self.solutions.iteritems():
             number_of_points = len(solution.get_list_of_points())
-            solution_value = solution.calculate_integrate()
-            solution_fit = abs(solution_value - exact_value) / abs(exact_value)
+            solution_fit = abs(calculate_relative_integral_difference(self.min, self.max, solution.calculate_value)) / abs(exact_value)
 
             if solution_fit <= self.epsilon:
                 self.solutions_epsilon[solution] = solution_fit
@@ -120,8 +119,9 @@ class SolutionsAggregator:
 
         for solution, degree in self.solutions.iteritems():
             number_of_points = len(solution.get_list_of_points())
-            solution_value = solution.calculate_integrate()
-            solution_fit = abs(solution_value - exact_value) / abs(exact_value)
+            solution_fit = abs(
+                calculate_relative_integral_difference(self.min, self.max, solution.solution.calculate_value)) / abs(
+                exact_value)
 
             if solution_fit <= self.epsilon:
                 self.solutions_epsilon[solution] = solution_fit

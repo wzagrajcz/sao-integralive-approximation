@@ -10,6 +10,10 @@ def f(x):
     # return 0.5 * x**4 - 2.34 * x**3 + 0.654 * x**2 - 12*x + 0.75
     return max(2*sin(x/2.0), 1.5)
 
+def calculate_relative_integral_difference(x1, x2, tree_function):
+    def new_function(x):
+        return (f(x) - tree_function(x)) ** 2
+    return sqrt(quad(new_function, x1, x2)[0])
 
 def calculate_library_integral_on_range(x1, x2):
     return quad(f, x1, x2)[0]
