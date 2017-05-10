@@ -4,10 +4,10 @@ from NodeAndPoligon import *
 
 
 class ManagePoligons:
-    def __init__(self, points, poligon_degree, function):
+    def __init__(self, points, poligon_degree, f):
         self.points = points
         self.poligon_degree = poligon_degree
-        self.function = function
+        self.f = f
         self.number_of_points = len(points) - 2
         self.number_of_ranges = len(points) - 1
         self.matrix_size = (poligon_degree + 1) * self.number_of_ranges
@@ -23,7 +23,7 @@ class ManagePoligons:
         for degree in range(self.poligon_degree + 1):
             equation[offset + self.poligon_degree - degree] += self.get_value_at_point(point, 1, degree)
 
-        return equation, f(point)
+        return equation, self.f(point)
 
     def get_equation_for_nth_derivative_equality_at_point(self, point, index_of_point, n):
         offset = (index_of_point - 1) * (self.poligon_degree + 1)

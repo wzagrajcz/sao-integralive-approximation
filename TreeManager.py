@@ -5,12 +5,13 @@ import sys
 
 
 class TreeManager:
-    def __init__(self):
+    def __init__(self, f):
         self.iterations = 10
         self.levels = 4
+        self.f = f
 
     def initialize_tree(self, left_limit, right_limit, poligon_degree):
-        return ManagePoligons([left_limit, right_limit], poligon_degree, f).resolve_poligons_list()[0]
+        return ManagePoligons([left_limit, right_limit], poligon_degree, self.f).resolve_poligons_list()[0]
 
     def clone_tree_structure(self, source):
         if source.left.is_tree():
@@ -43,7 +44,7 @@ class TreeManager:
                 list_of_points.append(midpoint_map[poligon])
                 list_of_points.append(poligon.high_limit)
 
-            new_poligons = ManagePoligons(list_of_points, poligon_degree, f).resolve_poligons_list()
+            new_poligons = ManagePoligons(list_of_points, poligon_degree, self.f).resolve_poligons_list()
             midpoint_to_improvement = {}
 
             for i in range(len(all_poligons)):
@@ -51,13 +52,13 @@ class TreeManager:
                 left_poligon = new_poligons[2 * i]
                 right_poligon = new_poligons[2 * i + 1]
 
-                exact_value = calculate_library_integral_on_range(source_poligon.low_limit, source_poligon.high_limit)
+                exact_value = calculate_library_integral_on_range(source_poligon.low_limit, source_poligon.high_limit, self.f)
 
                 def joined_calculate_poligon_value(x):
                     return left_poligon.alternative_calculate_value(x) + right_poligon.alternative_calculate_value(x)
 
-                before_split_error = abs(calculate_relative_integral_difference(source_poligon.low_limit, source_poligon.high_limit, source_poligon.calculate_value)) / abs(exact_value)
-                after_split_error = abs(calculate_relative_integral_difference(source_poligon.low_limit, source_poligon.high_limit, joined_calculate_poligon_value)) / abs(exact_value)
+                before_split_error = abs(calculate_relative_integral_difference(source_poligon.low_limit, source_poligon.high_limit, source_poligon.calculate_value, self.f)) / abs(exact_value)
+                after_split_error = abs(calculate_relative_integral_difference(source_poligon.low_limit, source_poligon.high_limit, joined_calculate_poligon_value, self.f)) / abs(exact_value)
 
 
                 midpoint_to_improvement[midpoint_map[source_poligon]] = before_split_error - after_split_error
@@ -70,7 +71,7 @@ class TreeManager:
                 destination_tree.insert_new_point(distribution.get_random_element())
 
             points = destination_tree.get_list_of_points()
-            destination_tree.map_poligons_over_tree(ManagePoligons(points, poligon_degree, f).resolve_poligons_list())
+            destination_tree.map_poligons_over_tree(ManagePoligons(points, poligon_degree, self.f).resolve_poligons_list())
 
             return destination_tree
 
@@ -80,7 +81,7 @@ class TreeManager:
 
             midpoint = self.find_random_point_between(high_limit, low_limit)
             poligons_list = ManagePoligons([low_limit, midpoint, high_limit], poligon_degree,
-                                           f).resolve_poligons_list()
+                                           self.f).resolve_poligons_list()
 
             return Tree(poligons_list[0], poligons_list[1], midpoint)
 

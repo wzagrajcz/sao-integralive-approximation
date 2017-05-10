@@ -5,7 +5,7 @@ import operator
 
 
 class SolutionsAggregator:
-    def __init__(self, mn, mx, epsilon, alpha):
+    def __init__(self, mn, mx, epsilon, alpha, f):
         self.min = mn
         self.max = mx
         self.epsilon = epsilon
@@ -13,6 +13,7 @@ class SolutionsAggregator:
         self.solutions = {}
         self.ordered_solutions = []
         self.solutions_epsilon = {}
+        self.f = f
 
     def add_solution_to_pool(self, solution, degree):
         self.solutions[solution] = degree
@@ -22,11 +23,11 @@ class SolutionsAggregator:
 
     def order_solutions(self):
         solutions_fit = {}
-        exact_value = calculate_library_integral_on_range(self.min, self.max)
+        exact_value = calculate_library_integral_on_range(self.min, self.max, self.f)
 
         for solution, degree in self.solutions.iteritems():
             number_of_points = len(solution.get_list_of_points())
-            solution_fit = abs(calculate_relative_integral_difference(self.min, self.max, solution.calculate_value)) / abs(exact_value)
+            solution_fit = abs(calculate_relative_integral_difference(self.min, self.max, solution.calculate_value, self.f)) / abs(exact_value)
 
             if solution_fit <= self.epsilon:
                 self.solutions_epsilon[solution] = solution_fit
@@ -42,7 +43,7 @@ class SolutionsAggregator:
         original_values = []
 
         for i in global_domain:
-            original_values.append(f(i))
+            original_values.append(self.f(i))
         plt.plot(global_domain, original_values, label='original')
 
         list_of_points = tree.get_list_of_points()
@@ -115,12 +116,12 @@ class SolutionsAggregator:
 
     def order_solutions_with_external_comparator(self, comparator):
         solutions_fit = {}
-        exact_value = calculate_library_integral_on_range(self.min, self.max)
+        exact_value = calculate_library_integral_on_range(self.min, self.max, self.f)
 
         for solution, degree in self.solutions.iteritems():
             number_of_points = len(solution.get_list_of_points())
             solution_fit = abs(
-                calculate_relative_integral_difference(self.min, self.max, solution.solution.calculate_value)) / abs(
+                calculate_relative_integral_difference(self.min, self.max, solution.solution.calculate_value, self.f)) / abs(
                 exact_value)
 
             if solution_fit <= self.epsilon:
