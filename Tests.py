@@ -27,19 +27,24 @@ polynomials_params =
 #Gaussian distribution
 # a b c d sigma
 # f(x) = a/(sigma * sqrt(b*pi)) * e ** ( (-c * x**2) / (d * sigma**2) )
-# f(x) = \frac{a}{\sigma \sqrt[]{b*pi}}\exp(-\frac{(-cx)^2}{d(\sigma)^2})
 gaussian_distribution_params = 
 [
-	10, 10, 10, 10, 10,
+	10, 10, 10, 10, 10
 
 ]
 
-#Gaussian distribution and deriodic functions
+#Gaussian distribution and periodic functions
 # a b c d e sigma
 # f(x) = a/(sigma * sqrt(b*pi)) * e ** ( (-c * x**2) / (d * sigma**2) ) * cos(x/e)
-# f(x) = \frac{a}{\sigma \sqrt[]{b*pi}}\exp(-\frac{(-cx)^2}{d(\sigma)^2}) * cos(x/e)
 gaussian_distribution_params = 
 [
 	10, 10, 10, 10, 3, 10,
-	10, 10, 10, 10, 10, 10,
+	10, 10, 10, 10, 10, 10
+]
+
+# max(a*sin(x/b), c)
+# a b c
+non_differentiable_function_params = 
+[
+	2.0, 2.0, 1.5
 ]
