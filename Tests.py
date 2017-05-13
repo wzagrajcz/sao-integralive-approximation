@@ -1,6 +1,6 @@
 #polynomials
 #degree params (starting from x_0,x_1...,x_degree-1)
-polynomials_params =
+polynomial_function_params =
 [
 	# f(x) = 3
 	1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -25,26 +25,32 @@ polynomials_params =
 ]
 
 #Gaussian distribution
-# a b c d sigma
-# f(x) = a/(sigma * sqrt(b*pi)) * e ** ( (-c * x**2) / (d * sigma**2) )
-gaussian_distribution_params = 
+# sigma ni
+# f(x) = (1.0/(sigma * math.sqrt(2.0*math.pi))) * math.exp(-math.pow(x-ni,2)/(2.0*math.pow(sigma,2)))
+gaussian_distribution_function_params = 
 [
-	10, 10, 10, 10, 10
-
+	2.0, 0.0,
+	1.0, 0.0,
+	0.5, 0.0,
+	1.0, 3.0
 ]
 
 #Gaussian distribution and periodic functions
-# a b c d e sigma
-# f(x) = a/(sigma * sqrt(b*pi)) * e ** ( (-c * x**2) / (d * sigma**2) ) * cos(x/e)
-gaussian_distribution_params = 
+# sigma ni a
+# f(x) = ((1.0/(sigma * math.sqrt(2.0*math.pi))) * math.exp(-math.pow(x-ni,2)/(2.0*math.pow(sigma,2)))) * cos(x/a)
+gaussian_distribution_periodic_function_params = 
 [
-	10, 10, 10, 10, 3, 10,
-	10, 10, 10, 10, 10, 10
+	1.0, 2.0,
+	1.0, 1.0,
+	1.5, 0.5
 ]
 
-# max(a*sin(x/b), c)
+# max(a*sin(x/b), 1.0)
 # a b c
 non_differentiable_function_params = 
 [
-	2.0, 2.0, 1.5
+	2.0, 2.0, 
+	10.0, 2.0,
+	2.0, 5.0,
+	2.0, 0.5
 ]
