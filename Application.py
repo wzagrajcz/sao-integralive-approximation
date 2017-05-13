@@ -1,26 +1,13 @@
 from TreeManager import *
 from StartupManager import *
 from SolutionsAggregator import *
+from Tests import *
 import os
-import math
 
-def non_differentiable_function(x, a, b):
-    return max(a*math.sin(x/b), 1.0)
-
-def gaussian_distribution_periodic_function(x, sigma, a):
-    return ((1.0/(sigma * math.sqrt(2.0*math.pi))) * math.exp(-math.pow(x,2)/(2.0*math.pow(sigma,2)))) * math.cos(x/a)
-
-def gaussian_distribution_function(x, sigma, ni):
-    return (1.0/(sigma * math.sqrt(2.0*math.pi))) * math.exp(-math.pow(x-ni,2)/(2.0*math.pow(sigma,2)))
-
-def polynomial_function(x, degree, params)
-    f = 0
-    for i in reversed(range(degree)):
-        f += pow(x,i)*params[i]
-    return f
-
-# def f(fun, x, *args):
-#     return fun(x, args)
+# f = PolynomialFunctionProvider(polynomial_function_params[4]).provide()
+# f = GaussianDistributionPeriodicFunctionProvider(gaussian_distribution_periodic_function_params[0]).provide()
+f = GaussianDistributionFunctionProvider(gaussian_distribution_function_params[2]).provide()
+# f = NonDifferentiableFunctionProvider(non_differentiable_function_params[0]).provide()
 
 def run(f, case_number):
     mn = -10
@@ -59,4 +46,4 @@ def run(f, case_number):
     solutions_aggregator.save_best_n_solutions_to_file(1, directory)
     solutions_aggregator.serialize_solutions_as_json(directory + 'solutions.json')
 
-#run(f(), 0)
+run(f, 0)
