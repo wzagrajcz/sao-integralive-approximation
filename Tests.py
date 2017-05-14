@@ -9,14 +9,14 @@ class PolynomialFunctionProvider:
         self.degree = test_case[0]
         self.params = test_case[1]
 
-    def function(self, x):
+    def polynomialFunction(self, x):
         f = 0
         for i in reversed(range(self.degree)):
             f += pow(x, i) * self.params[i]
         return f
 
     def provide(self):
-        return self.function
+        return self.polynomialFunction
 
 
 class GaussianDistributionPeriodicFunctionProvider:
@@ -24,12 +24,12 @@ class GaussianDistributionPeriodicFunctionProvider:
         self.sigma = test_case[0]
         self.a = test_case[1]
 
-    def function(self, x):
+    def gaussianDistributionPeriodicFunction(self, x):
         return ((1.0 / (self.sigma * math.sqrt(2.0 * math.pi))) * math.exp(
             -math.pow(x, 2) / (2.0 * math.pow(self.sigma, 2)))) * math.cos(x / self.a)
 
     def provide(self):
-        return self.function
+        return self.gaussianDistributionPeriodicFunction
 
 
 class GaussianDistributionFunctionProvider:
@@ -37,11 +37,11 @@ class GaussianDistributionFunctionProvider:
         self.sigma = test_case[0]
         self.ni = test_case[1]
 
-    def function(self, x):
+    def gaussianDistributionFunction(self, x):
         return (1.0/(self.sigma * math.sqrt(2.0*math.pi))) * math.exp(-math.pow(x-self.ni,2)/(2.0*math.pow(self.sigma,2)))
 
     def provide(self):
-        return self.function
+        return self.gaussianDistributionFunction
 
 
 class NonDifferentiableFunctionProvider:
@@ -49,11 +49,11 @@ class NonDifferentiableFunctionProvider:
         self.a = test_case[0]
         self.b = test_case[1]
 
-    def function(self, x):
+    def nonDifferentiableFunction(self, x):
         return max(self.a*math.sin(x/self.b), 1.0)
 
     def provide(self):
-        return self.function
+        return self.nonDifferentiableFunction
 
 
 polynomial_function_params = \
