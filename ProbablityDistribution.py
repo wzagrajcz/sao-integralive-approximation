@@ -1,9 +1,10 @@
 import sys
 import random
+import operator
 
 
 class ProbabilityDistribution:
-    def __init__(self, source_map):
+    def __init__(self, source_map, alpha = 1):
         self.source_map = source_map
 
         min_value = sys.float_info.max
@@ -14,7 +15,7 @@ class ProbabilityDistribution:
             if max_value < improvement:
                 max_value = improvement
 
-        offset = 1 - min_value
+        offset = alpha - min_value
         normalizer = 0.01 * (max_value + offset)
         normalized_map = {}
 
@@ -22,6 +23,17 @@ class ProbabilityDistribution:
             normalized_map[midpoint] = (improvement + offset) / normalizer
 
         self.normalized_map = normalized_map
+
+        self.probability_map = {}
+        sum = 0
+
+        for (k, v) in normalized_map.iteritems():
+            sum += v
+
+        for (k, v) in normalized_map.iteritems():
+            self.probability_map[k] = v/sum
+
+        self.probability = sorted(self.probability_map.items(), key=operator.itemgetter(0))
 
     def get_random_element(self):
         midpoint_to_endrange = {}
