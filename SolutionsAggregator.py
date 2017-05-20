@@ -83,6 +83,9 @@ class SolutionsAggregator:
 
         f.close()
 
+    def get_best_fitness(self):
+        return self.ordered_solutions[0][1]
+
     def serialize_solutions_as_json(self, file_path):
         f = open(file_path, "w+")
         f.write("[\n")
