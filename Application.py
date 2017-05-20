@@ -34,7 +34,7 @@ def run(f, case_number, try_no, alpha):
             solutions_aggregator.add_solution_to_pool(tree, degree)
 
     solutions_aggregator.order_solutions()
-    directory = 'plots/' + f.__name__ + '/' + try_no + '/' + str(alpha) + '/' + str(case_number) + '/'
+    directory = 'plots/' + f.__name__ + '/' + str(try_no) + '/' + str(alpha) + '/' + str(case_number) + '/'
     if not os.path.exists(directory):
         os.makedirs(directory)
     solutions_aggregator.save_best_n_solutions_to_file(1, directory)
