@@ -62,7 +62,7 @@ class SolutionsAggregator:
         number_of_solutions_to_save = min(n, len(self.ordered_solutions))
         for i in range(number_of_solutions_to_save):
             self.get_color_plot(self.ordered_solutions[i][0], path + str(i) + '.' + extention)
-        print "Saved " + str(number_of_solutions_to_save) + " solutions"
+        #print "Saved " + str(number_of_solutions_to_save) + " solutions"
 
     # deprecated
     def serialize_solutions_to_file(self, file_path):

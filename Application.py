@@ -34,16 +34,16 @@ def run(f, case_number, try_no, alpha):
             solutions_aggregator.add_solution_to_pool(tree, degree)
 
     solutions_aggregator.order_solutions()
-    directory = 'plots/' + f.__name__ + '/' + str(try_no) + '/' + str(alpha) + '/' + str(case_number) + '/'
+    directory = 'plots/' + f.__name__ + '/try_no_' + str(try_no) + '/alpha_' + str(alpha) + '/case_number_' + str(case_number) + '/'
     if not os.path.exists(directory):
         os.makedirs(directory)
     solutions_aggregator.save_best_n_solutions_to_file(1, directory)
     solutions_aggregator.serialize_solutions_as_json(directory + 'solutions.json')
 
-    print str(solutions_aggregator.get_best_fitness())
+    print str(case_number) + ',' + str(solutions_aggregator.get_best_fitness())
 
 def test():
-    for try_no in range(0,10):
+    for try_no in range(0,5):
         print 'Try: ' + str(try_no)
         for alpha in [0.0, 1.0, 3.0, 6.0, 10.0, 20.0, 100.0, 1000.0]:
             print 'Alpha: ' + str(alpha)
@@ -51,46 +51,46 @@ def test():
             case_number = 0
             print 'PolynomialFunction'
             for i in range(len(polynomial_function_params)):
-                print 'Case number: ' + str(case_number)
+                #print 'Case number: ' + str(case_number)
                 f = PolynomialFunctionProvider(polynomial_function_params[i]).provide()
                 try:
                     run(f, case_number, try_no, alpha)
                 except:
-                    print 'An error occured in PolynomialFunctionProvider - case_number: ' + str(case_number)
+                    print str(case_number) + ',' + 'na'
                 case_number+=1
 
 
             case_number = 0
             print 'GaussianDistributionPeriodicFunction'
             for i in range(len(gaussian_distribution_periodic_function_params)):
-                print 'Case number: ' + str(case_number)
+                #print 'Case number: ' + str(case_number)
                 f = GaussianDistributionPeriodicFunctionProvider(gaussian_distribution_periodic_function_params[i]).provide()
                 try:
                     run(f, case_number, try_no, alpha)
                 except:
-                    print 'An error occured in GaussianDistributionPeriodicFunctionProvider - case_number: ' + str(case_number)
+                    print str(case_number) + ',' + 'na'
                 case_number+=1
 
             case_number = 0
             print 'GaussianDistributionFunction'
             for i in range(len(gaussian_distribution_function_params)):
-                print 'Case number: ' + str(case_number)
+                #print 'Case number: ' + str(case_number)
                 f = GaussianDistributionFunctionProvider(gaussian_distribution_function_params[i]).provide()
                 try:
                     run(f, case_number, try_no, alpha)
                 except:
-                    print 'An error occured in GaussianDistributionFunctionProvider - case_number: ' + str(case_number)
+                    print str(case_number) + ',' + 'na'
                 case_number+=1
 
             case_number = 0
             print 'NonDifferentiableFunction'
             for i in range(len(non_differentiable_function_params)):
-                print 'Case number: ' + str(case_number)
+                #print 'Case number: ' + str(case_number)
                 f = NonDifferentiableFunctionProvider(non_differentiable_function_params[i]).provide()
                 try:
                     run(f, case_number, try_no, alpha)
                 except:
-                    print 'An error occured in NonDifferentiableFunctionProvider - case_number: ' + str(case_number)
+                    print str(case_number) + ',' + 'na'
                 case_number+=1
 
 test()
