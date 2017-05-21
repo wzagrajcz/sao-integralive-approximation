@@ -12,7 +12,7 @@ def run(f, case_number, try_no, alpha):
     posible_degrees = range(1, 6)
     trees = {}
     startup_manager = StartupManager(posible_degrees)
-    solutions_aggregator = SolutionsAggregator(mn, mx, epsilon, alpha, f)
+    solutions_aggregator = SolutionsAggregator(mn, mx, epsilon, 0.5, f)
 
     for i in range(125):
         degree = startup_manager.get_most_optimal_solution()

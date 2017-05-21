@@ -5,11 +5,11 @@ import operator
 
 
 class SolutionsAggregator:
-    def __init__(self, mn, mx, epsilon, alpha, f):
+    def __init__(self, mn, mx, epsilon, beta, f):
         self.min = mn
         self.max = mx
         self.epsilon = epsilon
-        self.alpha = alpha
+        self.beta = beta
         self.solutions = {}
         self.ordered_solutions = []
         self.solutions_epsilon = {}
@@ -19,7 +19,7 @@ class SolutionsAggregator:
         self.solutions[solution] = degree
 
     def solution_greatness(self, degree, number_of_points, difference_to_solution):
-        return self.alpha*0.01*(1.0/8.0 - 1.0/(((degree + 1) * (number_of_points - 1)) ** 3)) + (1.0 - self.alpha)*difference_to_solution
+        return self.beta * 0.01 * (1.0 / 8.0 - 1.0 / (((degree + 1) * (number_of_points - 1)) ** 3)) + (1.0 - self.beta) * difference_to_solution
 
     def order_solutions(self):
         solutions_fit = {}
