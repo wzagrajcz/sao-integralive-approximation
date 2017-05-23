@@ -34,11 +34,11 @@ def run(f, case_number, try_no, alpha):
             solutions_aggregator.add_solution_to_pool(tree, degree)
 
     solutions_aggregator.order_solutions()
-    directory = 'plots/' + f.__name__ + '/try_no_' + str(try_no) + '/alpha_' + str(alpha) + '/case_number_' + str(case_number) + '/'
-    if not os.path.exists(directory):
-       os.makedirs(directory)
-    solutions_aggregator.save_best_n_solutions_to_file(1, directory)
-    solutions_aggregator.serialize_solutions_as_json(directory + 'solutions.json')
+    # directory = 'plots/' + f.__name__ + '/try_no_' + str(try_no) + '/alpha_' + str(alpha) + '/case_number_' + str(case_number) + '/'
+    # if not os.path.exists(directory):
+    #    os.makedirs(directory)
+    # solutions_aggregator.save_best_n_solutions_to_file(1, directory)
+    # solutions_aggregator.serialize_solutions_as_json(directory + 'solutions.json')
 
     print str(solutions_aggregator.get_best_fitness()) + ',',
 
@@ -73,7 +73,7 @@ def test():
         for alpha in [0.0, 1.0, 3.0, 6.0, 10.0, 20.0, 100.0, 1000.0]:
             print str(alpha) + ',' + str(i) + ',',
             for try_no in range(0,5):
-                f = GaussianDistributionPeriodicFunctionProvider(gaussian_distribution_function_params[i]).provide()
+                f = GaussianDistributionFunctionProvider(gaussian_distribution_function_params[i]).provide()
                 try:
                     run(f, i, try_no, alpha)
                 except:
@@ -85,7 +85,7 @@ def test():
         for alpha in [0.0, 1.0, 3.0, 6.0, 10.0, 20.0, 100.0, 1000.0]:
             print str(alpha) + ',' + str(i) + ',',
             for try_no in range(0,5):
-                f = GaussianDistributionPeriodicFunctionProvider(non_differentiable_function_params[i]).provide()
+                f = NonDifferentiableFunctionProvider(non_differentiable_function_params[i]).provide()
                 try:
                     run(f, i, try_no, alpha)
                 except:
@@ -93,3 +93,11 @@ def test():
             print " "
 
 test()
+# f = PolynomialFunctionProvider(polynomial_function_params[5]).provide()
+# run(f, 5, 0, 1.0)
+# f = GaussianDistributionPeriodicFunctionProvider(gaussian_distribution_periodic_function_params[0]).provide()
+# run(f, 0, 0, 1.0)
+# f = GaussianDistributionFunctionProvider(gaussian_distribution_function_params[0]).provide()
+# run(f, 0, 0, 1.0)
+# f = NonDifferentiableFunctionProvider(non_differentiable_function_params[0]).provide()
+# run(f, 0, 0, 1.0)
